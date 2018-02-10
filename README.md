@@ -7,7 +7,7 @@ FastNoiseJS is a noise library that uses [FastNoise](https://github.com/Auburns/
 ```
 $ yarn add fastnoisejs
 
-# Or, if you're old sschool...
+# Or, if you're old school...
 
 $ npm install fastnoisejs --save
 ```

@@ -1,7 +1,28 @@
 {
   "name": "fastnoisejs",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "index.js",
   "author": "Philip Scott <pscott@zeptohost.com>",
-  "license": "MIT"
+  "keywords": [
+    "fastnoise",
+    "noise",
+    "perlin",
+    "perlin noise",
+    "simplex",
+    "simplex noise",
+    "value",
+    "value noise",
+    "cellular",
+    "cellular noise",
+    "cubic",
+    "cubic noise",
+    "fractal",
+    "fractal noise",
+    "procedural generation"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScottyFillups/FastNoiseJS.git"
+  }
 }
