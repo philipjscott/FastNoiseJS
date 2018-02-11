@@ -7,6 +7,9 @@ notifications:
 node_js:
   - '9'
   - '8'
+install: yarn install
+before_script: yarn run build
+script: yarn run test
 after_success:
   - npm run travis-deploy-once "npm run semantic-release"
 branches:

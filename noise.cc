@@ -85,6 +85,7 @@ namespace noise {
     NODE_SET_METHOD(exports, "GetSimplexFractal", GetSimplexFractal);
     NODE_SET_METHOD(exports, "GetCellular", GetCellular);
     NODE_SET_METHOD(exports, "GetCubic", GetCubic);
+    NODE_SET_METHOD(exports, "GetCubicFractal", GetCubicFractal);
     NODE_SET_METHOD(exports, "GetWhiteNoise", GetWhiteNoise);
   }
 
