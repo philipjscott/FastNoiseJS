@@ -64,6 +64,18 @@
     "v8_use_snapshot": "true",
     "want_separate_host_toolset": 0,
     "nodedir": "/home/philip/.node-gyp/9.0.0",
-    "standalone_static_library": 1
+    "standalone_static_library": 1,
+    "init_license": "MIT",
+    "version_git_message": "v%s",
+    "user_agent": "yarn/1.3.2 npm/? node/v9.0.0 linux x64",
+    "init_version": "1.0.0",
+    "registry": "https://registry.yarnpkg.com",
+    "strict_ssl": "true",
+    "version_git_sign": "",
+    "version_tag_prefix": "v",
+    "ignore_scripts": "",
+    "version_git_tag": "true",
+    "save_prefix": "^",
+    "ignore_optional": ""
   }
 }

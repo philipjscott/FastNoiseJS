@@ -1,6 +1,6 @@
 {
   "name": "fastnoisejs",
-  "version": "0.0.0",
+  "version": "0.0.0-development",
   "main": "index.js",
   "author": "Philip Scott <pscott@zeptohost.com>",
   "keywords": [
@@ -23,6 +23,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ScottyFillups/FastNoiseJS.git"
+    "url": "https://github.com/ScottyFillups/FastNoiseJS.git"
+  },
+  "scripts": {
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
+  },
+  "devDependencies": {
+    "semantic-release": "^12.4.1",
+    "travis-deploy-once": "^4.3.4"
   }
 }
