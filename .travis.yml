@@ -11,7 +11,7 @@ install: yarn install
 before_script: yarn run build
 script: yarn run test
 after_success:
-  - npm run travis-deploy-once "npm run semantic-release"
+  - yarn run travis-deploy-once "yarn run semantic-release"
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
