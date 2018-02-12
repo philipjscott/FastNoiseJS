@@ -1,6 +1,6 @@
 {
   "name": "fastnoisejs",
-  "version": "0.0.0-development",
+  "version": "0.0.1",
   "main": "index.js",
   "author": "Philip Scott <pscott@zeptohost.com>",
   "license": "MIT",
