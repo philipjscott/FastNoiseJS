@@ -76,8 +76,9 @@ INCS_Release := \
 	-I/home/philip/.node-gyp/9.0.0/deps/v8/include
 
 OBJS := \
-	$(obj).target/$(TARGET)/noise.o \
-	$(obj).target/$(TARGET)/FastNoise.o
+	$(obj).target/$(TARGET)/addon.o \
+	$(obj).target/$(TARGET)/FastNoiseJs.o \
+	$(obj).target/$(TARGET)/vendor/FastNoise.o
 
 # Add to the list of files we specially track dependencies for.
 all_deps += $(OBJS)

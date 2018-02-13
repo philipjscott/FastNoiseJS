@@ -1,1 +1,1 @@
-cmd_Release/obj.target/noise.node := g++ -shared -pthread -rdynamic -m64  -Wl,-soname=noise.node -o Release/obj.target/noise.node -Wl,--start-group Release/obj.target/noise/noise.o Release/obj.target/noise/FastNoise.o -Wl,--end-group 
+cmd_Release/obj.target/noise.node := g++ -shared -pthread -rdynamic -m64  -Wl,-soname=noise.node -o Release/obj.target/noise.node -Wl,--start-group Release/obj.target/noise/addon.o Release/obj.target/noise/FastNoiseJs.o Release/obj.target/noise/vendor/FastNoise.o -Wl,--end-group 

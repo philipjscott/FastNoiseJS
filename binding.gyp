@@ -2,7 +2,11 @@
   "targets": [
   {
     "target_name": "noise",
-    "sources": [ "noise.cc", "FastNoise.cc" ]
+    "sources": [
+      "addon.cc",
+      "FastNoiseJs.cc",
+      "./vendor/FastNoise.cc"
+    ]
   }
   ]
 }

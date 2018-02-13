@@ -1,5 +1,6 @@
 const { expect } = require('chai')
-const noise = require('../index')
+const fastnoise = require('../index')
+const noise = fastnoise.Create()
 
 describe('FastNoiseJS library', function () {
   let x, y, z
