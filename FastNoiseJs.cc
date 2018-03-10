@@ -40,365 +40,387 @@ Napi::Object FastNoiseJs::Init(Napi::Env env, Napi::Object exports) {
   constructor.SuppressDetruct();
 
   exports.set("Create", func);
-  exports.set("ENUM", Napi::Number::New(env, FastNoise::ENUM));
+  exports.set("Value", Napi::Number::New(env, FastNoise::Value));
+  exports.set("ValueFractal", Napi::Number::New(env, FastNoise::ValueFractal));
+  exports.set("Perlin", Napi::Number::New(env, FastNoise::Perlin));
+  exports.set("PerlinFractal", Napi::Number::New(env, FastNoise::PerlinFractal));
+  exports.set("Simplex", Napi::Number::New(env, FastNoise::Simplex));
+  exports.set("SimplexFractal", Napi::Number::New(env, FastNoise::SimplexFractal));
+  exports.set("Cellular", Napi::Number::New(env, FastNoise::Cellular));
+  exports.set("Cubic", Napi::Number::New(env, FastNoise::Cubic));
+  exports.set("CubicFractal", Napi::Number::New(env, FastNoise::CubicFractal));
+  exports.set("WhiteNoise", Napi::Number::New(env, FastNoise::WhiteNoise));
+
+  exports.set("Linear", Napi::Number::New(env, FastNoise::Linear));
+  exports.set("Hermite", Napi::Number::New(env, FastNoise::Hermite));
+  exports.set("Quintic", Napi::Number::New(env, FastNoise::Quintic));
+
+  exports.set("FBM", Napi::Number::New(env, FastNoise::FBM));
+  exports.set("Billow", Napi::Number::New(env, FastNoise::Billow));
+  exports.set("RigidMulti", Napi::Number::New(env, FastNoise::RigidMulti));
+
+  exports.set("Euclidean", Napi::Number::New(env, FastNoise::Euclidean));
+  exports.set("Manhattan", Napi::Number::New(env, FastNoise::Manhattan));
+  exports.set("Natural", Napi::Number::New(env, FastNoise::Natural));
+
+  exports.set("CellValue", Napi::Number::New(env, FastNoise::CellValue));
+  exports.set("NoiseLookup", Napi::Number::New(env, FastNoise::NoiseLookup));
+  exports.set("Distance", Napi::Number::New(env, FastNoise::Distance));
+  exports.set("Distance2", Napi::Number::New(env, FastNoise::Distance2));
+  exports.set("Distance2Add", Napi::Number::New(env, FastNoise::Distance2Add));
+  exports.set("Distance2Sub", Napi::Number::New(env, FastNoise::Distance2Sub));
+  exports.set("Distance2Mul", Napi::Number::New(env, FastNoise::Distance2Mul));
+  exports.set("Distance2Div", Napi::Number::New(env, FastNoise::Distance2Div));
 
   return exports;
 }
 
-namespace fastnoisejs {
-  using v8::Context;
-  using v8::Function;
-  using v8::FunctionCallbackInfo;
-  using v8::FunctionTemplate;
-  using v8::Isolate;
-  using v8::Local;
-  using v8::Number;
-  using v8::Object;
-  using v8::Persistent;
-  using v8::String;
-  using v8::Value;
+FastNoiseJs::FastNoiseJs(const Napi::CallbackInfo& info) : Napi::ObjectWrap<FastNoiseJs>(info)  {
+  Napi::Env env = info.Env();
+  Napi::HandleScope scope(env);
 
-  Persistent<Function> FastNoiseJs::constructor;
+  int length = info.Length();
 
-  FastNoiseJs::FastNoiseJs(int seed) {
-    noise.SetSeed(seed);
-  }
-
-  FastNoiseJs::~FastNoiseJs() {
-  }
-
-  void FastNoiseJs::Init(Isolate* isolate) {
-    Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);
-    tpl->SetClassName(String::NewFromUtf8(isolate, "FastNoiseJsJs"));
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
-
-    NODE_SET_PROTOTYPE_METHOD(tpl, "GetSeed", GetSeed);
-
-    constructor.Reset(isolate, tpl->GetFunction());
-  }
-
-  void FastNoiseJs::New(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = args.GetIsolate();
-
-    if (args.IsConstructCall()) {
-      int seed = args[0]->IsUndefined() ? 1337 : args[0]->Int32Value();
-      FastNoiseJs* obj = new FastNoiseJs(seed);
-      obj->Wrap(args.This());
-      args.GetReturnValue().Set(args.This());
+  if (length <= 0 || !info[0].IsNumber()) {
+    if (!info[0].IsNumber()) {
+      Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
     } else {
-      NewInstance(args);
+      Napi::Number value = info[0].As<Napi::Number>();
+      this->noise.SetSeed(value.Int32Value());
     }
   }
+}
 
-  void FastNoiseJs::NewInstance(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = args.GetIsolate();
+Napi::Number FastNoiseJs::GetSeed(const Napi::CallbackInfo& info) {
+  return Napi::Number::New(info.Env(), this->noise.GetSeed());
+}
 
-    const int argc = 1;
-    Local<Value> argv[argc] = { args[0] };
-    Local<Function> cons = Local<Function>::New(isolate, constructor);
-    Local<Context> context = isolate->GetCurrentContext();
-    Local<Object> instance =
-      cons->NewInstance(context, argc, argv).ToLocalChecked();
-    args.GetReturnValue().Set(instance);
+Napi::Number FastNoiseJs::SetSeed(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetSeed(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetFrequency(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetFrequency(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetInterp(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetInterp(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetNoiseType(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetNoiseType(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetFractalOctaves(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetFractalOctaves(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetFractalLacunarity(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetFractalLacunarity(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetFractalGain(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetFractalGain(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetFractalType(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetFractalType(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetCellularDistanceFunction(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetCellularDistanceFunction(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetCellularReturnType(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetCellularReturnType(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetCellularDistance2Indices(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetCellularDistance2Indices(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::SetCellularJitter(const Napi::CallbackInfo& info) {
+  Napi::Number value = info[0].As<Napi::Number>();
+
+  this->noise.SetCellularJitter(value.Int32Value());
+
+  return value;
+}
+
+Napi::Number FastNoiseJs::GetNoise(const Napi::CallbackInfo& info) {
+  float res;
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetNoise(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetNoise(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::GetSeed(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), obj->noise.GetSeed()));
+  return Napi::Number::New(info.Env(), res);
+}
+
+Napi::Number FastNoiseJs::GetValue(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetValue(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetValue(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetSeed(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetSeed(args[0]->Int32Value());
+  return Napi::Number::New(info.Env(), res);
+}
+
+Napi::Number FastNoiseJs::GetValueFractal(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetValueFractal(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetValueFractal(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetFrequency(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetFrequency(args[0]->NumberValue());
+  return Napi::Number::New(info.Env(), res);
+}
+
+Napi::Number FastNoiseJs::GetPerlin(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetPerlin(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetPerlin(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetInterp(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetInterp(static_cast<FastNoise::Interp>(args[0]->Int32Value()));
+  return Napi::Number::New(info.Env(), res);
+}
+
+Napi::Number FastNoiseJs::GetPerlinFractal(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetPerlinFractal(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetPerlinFractal(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetNoiseType(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetNoiseType(static_cast<FastNoise::NoiseType>(args[0]->Int32Value()));
+  return Napi::Number::New(info.Env(), res);
+} 
+
+Napi::Number FastNoiseJs::GetSimplex(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetSimplex(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetSimplex(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
+    case 4:
+      res = this->noise.GetSimplex(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue(),
+          info[3].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetFractalOctaves(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetFractalOctaves(args[0]->Int32Value());
+  return Napi::Number::New(info.Env(), res);
+} 
+
+Napi::Number FastNoiseJs::GetSimplexFractal(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetSimplexFractal(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetSimplexFractal(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetFractalLacunarity(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetFractalLacunarity(args[0]->NumberValue());
+  return Napi::Number::New(info.Env(), res);
+} 
+
+Napi::Number FastNoiseJs::GetCellular(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetCellular(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetCellular(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetFractalGain(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetFractalGain(args[0]->NumberValue());
+  return Napi::Number::New(info.Env(), res);
+}
+
+Napi::Number FastNoiseJs::GetCubic(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetCubic(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetCubic(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetFractalType(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetFractalType(static_cast<FastNoise::FractalType>(args[0]->Int32Value()));
+  return Napi::Number::New(info.Env(), res);
+}
+
+Napi::Number FastNoiseJs::GetCubicFractal(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetCubicFractal(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetCubicFractal(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetCellularDistanceFunction(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetCellularDistanceFunction(static_cast<FastNoise::CellularDistanceFunction>(args[0]->Int32Value()));
+  return Napi::Number::New(info.Env(), res);
+}
+
+Napi::Number FastNoiseJs::GetWhiteNoise(const Napi::CallbackInfo& info) {
+  float res;
+
+  FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
+
+  switch(info.Length()) {
+    case 2:
+      res = this->noise.GetWhiteNoise(info[0].As<Napi::Number>().DoubleValue(), info[1].As<Napi::Number>().DoubleValue());
+      break;
+    case 3:
+      res = this->noise.GetWhiteNoise(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue());
+      break;
+    case 4:
+      res = this->noise.GetWhiteNoise(
+          info[0].As<Napi::Number>().DoubleValue(),
+          info[1].As<Napi::Number>().DoubleValue(),
+          info[2].As<Napi::Number>().DoubleValue(),
+          info[3].As<Napi::Number>().DoubleValue());
+      break;
   }
 
-  void FastNoiseJs::SetCellularReturnType(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetCellularReturnType(static_cast<FastNoise::CellularReturnType>(args[0]->Int32Value()));
-  }
-
-  void FastNoiseJs::SetCellularDistance2Indices(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetCellularDistance2Indices(args[0]->Int32Value(), args[1]->Int32Value());
-  }
-
-  void FastNoiseJs::SetCellularJitter(const FunctionCallbackInfo<Value>& args) {
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-    obj->noise.SetCellularJitter(args[0]->NumberValue());
-  }
-
-  void FastNoiseJs::GetNoise(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetNoise(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetNoise(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
-
-  void FastNoiseJs::GetValue(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetValue(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetValue(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
-
-  void FastNoiseJs::GetValueFractal(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetValueFractal(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetValueFractal(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
-
-  void FastNoiseJs::GetPerlin(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetPerlin(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetPerlin(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
-
-  void FastNoiseJs::GetPerlinFractal(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetPerlinFractal(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetPerlinFractal(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  } 
-
-  void FastNoiseJs::GetSimplex(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetSimplex(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetSimplex(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-      case 4:
-        res = obj->noise.GetSimplex(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue(),
-            args[3]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  } 
-
-  void FastNoiseJs::GetSimplexFractal(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetSimplexFractal(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetSimplexFractal(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  } 
-
-  void FastNoiseJs::GetCellular(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetCellular(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetCellular(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
-
-  void FastNoiseJs::GetCubic(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetCubic(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetCubic(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
-
-  void FastNoiseJs::GetCubicFractal(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetCubicFractal(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetCubicFractal(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
-
-  void FastNoiseJs::GetWhiteNoise(const FunctionCallbackInfo<Value>& args) {
-    float res;
-
-    FastNoiseJs* obj = ObjectWrap::Unwrap<FastNoiseJs>(args.Holder());
-
-    switch(args.Length()) {
-      case 2:
-        res = obj->noise.GetWhiteNoise(args[0]->NumberValue(), args[1]->NumberValue());
-        break;
-      case 3:
-        res = obj->noise.GetWhiteNoise(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue());
-        break;
-      case 4:
-        res = obj->noise.GetWhiteNoise(
-            args[0]->NumberValue(),
-            args[1]->NumberValue(),
-            args[2]->NumberValue(),
-            args[3]->NumberValue());
-        break;
-    }
-
-    args.GetReturnValue().Set(Number::New(args.GetIsolate(), res));
-  }
+  return Napi::Number::New(info.Env(), res);
+}
 
 }
