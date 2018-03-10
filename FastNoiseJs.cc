@@ -1,6 +1,49 @@
-#include <node.h>
-#include "./vendor/FastNoise.h"
 #include "FastNoiseJs.h"
+#include "./vendor/FastNoise.h"
+
+Napi::FunctionReference FastNoiseJs::constructor;
+
+Napi::Object FastNoiseJs::Init(Napi::Env env, Napi::Object exports) {
+  Napi::HandleScope scope(env);
+
+  Napi::Function func = DefineClass(env, "Create", {
+    InstanceMethod("GetNoise", &FastNoiseJs::GetNoise),
+    InstanceMethod("GetSeed", &FastNoiseJs::GetSeed),
+    InstanceMethod("SetSeed", &FastNoiseJs::SetSeed),
+    InstanceMethod("SetFrequency", &FastNoiseJs::SetFrequency),
+    InstanceMethod("SetInterp", &FastNoiseJs::SetInterp),
+    InstanceMethod("SetNoiseType", &FastNoiseJs::SetNoiseType),
+    InstanceMethod("SetFractalOctaves", &FastNoiseJs::SetFractalOctaves),
+    InstanceMethod("SetFractalLacunarity", &FastNoiseJs::SetFractalLacunarity),
+    InstanceMethod("SetFractalGain", &FastNoiseJs::SetFractalGain),
+    InstanceMethod("SetFractalType", &FastNoiseJs::SetFractalType),
+    InstanceMethod("SetCellularDistanceFunction", &FastNoiseJs::SetCellularDistanceFunction),
+    InstanceMethod("SetCellularReturnType", &FastNoiseJs::SetCellularReturnType),
+    // SetCellularNoiseLookup(const Napi::CallbackInfo& info); TODO
+    InstanceMethod("SetCellularDistance2Indices", &FastNoiseJs::SetCellularDistance2Indices),
+    InstanceMethod("SetCellularJitter", &FastNoiseJs::SetCellularJitter),
+
+    InstanceMethod("GetNoise", &FastNoiseJs::GetNoise),
+    InstanceMethod("GetValue", &FastNoiseJs::GetValue),
+    InstanceMethod("GetValueFractal", &FastNoiseJs::GetValueFractal),
+    InstanceMethod("GetPerlin", &FastNoiseJs::GetPerlin),
+    InstanceMethod("GetPerlinFractal", &FastNoiseJs::GetPerlinFractal),
+    InstanceMethod("GetSimplex", &FastNoiseJs::GetSimplex),
+    InstanceMethod("GetSimplexFractal", &FastNoiseJs::GetSimplexFractal),
+    InstanceMethod("GetCellular", &FastNoiseJs::GetCellular),
+    InstanceMethod("GetWhiteNoise", &FastNoiseJs::GetWhiteNoise),
+    InstanceMethod("GetCubic", &FastNoiseJs::GetCubic),
+    InstanceMethod("GetCubicFractal", &FastNoiseJs::GetCubicFractal)
+  });
+
+  constructor = Napi::Persistent(func);
+  constructor.SuppressDetruct();
+
+  exports.set("Create", func);
+  exports.set("ENUM", Napi::Number::New(env, FastNoise::ENUM));
+
+  return exports;
+}
 
 namespace fastnoisejs {
   using v8::Context;

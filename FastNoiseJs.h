@@ -1,58 +1,45 @@
 #ifndef FASTNOISEJS_H
 #define FASTNOISEJS_H
 
-#include <node.h>
-#include <node_object_wrap.h>
+#include <napi.h>
 #include "./vendor/FastNoise.h"
 
-namespace fastnoisejs {
-  using v8::Function;
-  using v8::FunctionCallbackInfo;
-  using v8::Isolate;
-  using v8::Object;
-  using v8::Value;
-  using v8::Persistent;
-  using node::ObjectWrap;
+class FastNoiseJs : public Napi::ObjectWrap<FastNoiseJs> {
+  public:
+    static Napi::Object Init(Napi::Env env, Napi::Object exports);
+    FastNoise(const Napi::CallbackInfo& info);
 
-  class FastNoiseJs : public ObjectWrap {
-    public:
-      static void Init(Isolate* isolate);
-      static void NewInstance(const FunctionCallbackInfo<Value>& args);
+  private:
+    static Napi::FunctionReference constructor;
 
-    private:
-      explicit FastNoiseJs(int seed = 1337);
-      ~FastNoiseJs();
+    Napi::Number GetSeed(const Napi::CallbackInfo& info);
+    Napi::Number SetSeed(const Napi::CallbackInfo& info);
+    Napi::Number SetFrequency(const Napi::CallbackInfo& info);
+    Napi::Number SetInterp(const Napi::CallbackInfo& info);
+    Napi::Number SetNoiseType(const Napi::CallbackInfo& info);
+    Napi::Number SetFractalOctaves(const Napi::CallbackInfo& info);
+    Napi::Number SetFractalLacunarity(const Napi::CallbackInfo& info);
+    Napi::Number SetFractalGain(const Napi::CallbackInfo& info);
+    Napi::Number SetFractalType(const Napi::CallbackInfo& info);
+    Napi::Number SetCellularDistanceFunction(const Napi::CallbackInfo& info);
+    Napi::Number SetCellularReturnType(const Napi::CallbackInfo& info);
+    // SetCellularNoiseLookup(const Napi::CallbackInfo& info); TODO
+    Napi::Number SetCellularDistance2Indices(const Napi::CallbackInfo& info);
+    Napi::Number SetCellularJitter(const Napi::CallbackInfo& info);
 
-      static void GetSeed(const FunctionCallbackInfo<Value>& args);
-      static void SetSeed(const FunctionCallbackInfo<Value>& args);
-      static void SetFrequency(const FunctionCallbackInfo<Value>& args);
-      static void SetInterp(const FunctionCallbackInfo<Value>& args);
-      static void SetNoiseType(const FunctionCallbackInfo<Value>& args);
-      static void SetFractalOctaves(const FunctionCallbackInfo<Value>& args);
-      static void SetFractalLacunarity(const FunctionCallbackInfo<Value>& args);
-      static void SetFractalGain(const FunctionCallbackInfo<Value>& args);
-      static void SetFractalType(const FunctionCallbackInfo<Value>& args);
-      static void SetCellularDistanceFunction(const FunctionCallbackInfo<Value>& args);
-      static void SetCellularReturnType(const FunctionCallbackInfo<Value>& args);
-      // static void SetCellularNoiseLookup(const FunctionCallbackInfo<Value>& args); TODO
-      static void SetCellularDistance2Indices(const FunctionCallbackInfo<Value>& args);
-      static void SetCellularJitter(const FunctionCallbackInfo<Value>& args);
+    Napi::Number GetNoise(const Napi::CallbackInfo& info);
+    Napi::Number GetValue(const Napi::CallbackInfo& info);
+    Napi::Number GetValueFractal(const Napi::CallbackInfo& info);
+    Napi::Number GetPerlin(const Napi::CallbackInfo& info);
+    Napi::Number GetPerlinFractal(const Napi::CallbackInfo& info);
+    Napi::Number GetSimplex(const Napi::CallbackInfo& info);
+    Napi::Number GetSimplexFractal(const Napi::CallbackInfo& info);
+    Napi::Number GetCellular(const Napi::CallbackInfo& info);
+    Napi::Number GetWhiteNoise(const Napi::CallbackInfo& info);
+    Napi::Number GetCubic(const Napi::CallbackInfo& info);
+    Napi::Number GetCubicFractal(const Napi::CallbackInfo& info);
 
-      static void GetNoise(const FunctionCallbackInfo<Value>& args);
-      static void GetValue(const FunctionCallbackInfo<Value>& args);
-      static void GetValueFractal(const FunctionCallbackInfo<Value>& args);
-      static void GetPerlin(const FunctionCallbackInfo<Value>& args);
-      static void GetPerlinFractal(const FunctionCallbackInfo<Value>& args);
-      static void GetSimplex(const FunctionCallbackInfo<Value>& args);
-      static void GetSimplexFractal(const FunctionCallbackInfo<Value>& args);
-      static void GetCellular(const FunctionCallbackInfo<Value>& args);
-      static void GetWhiteNoise(const FunctionCallbackInfo<Value>& args);
-      static void GetCubic(const FunctionCallbackInfo<Value>& args);
-      static void GetCubicFractal(const FunctionCallbackInfo<Value>& args);
-      static void New(const FunctionCallbackInfo<Value>& args);
-      static Persistent<Function> constructor; 
-      FastNoise noise;
-  };
+    FastNoise noise;
 }
 
 #endif
