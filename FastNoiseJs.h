@@ -40,6 +40,6 @@ class FastNoiseJs : public Napi::ObjectWrap<FastNoiseJs> {
     Napi::Number GetCubicFractal(const Napi::CallbackInfo& info);
 
     FastNoise noise;
-}
+};
 
 #endif
