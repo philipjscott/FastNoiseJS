@@ -3,3 +3,4 @@
 *.swp
 TODO.md
 *.log
+**/build
