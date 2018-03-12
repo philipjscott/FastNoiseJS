@@ -1,3 +1,3 @@
-const noise = require('./build/Release/noise')
+const noise = require('bindings')('addon')
 
 module.exports = noise
