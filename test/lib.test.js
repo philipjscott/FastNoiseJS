@@ -1,9 +1,9 @@
 const { expect } = require('chai')
 const fastnoise = require('../index')
-const noise = fastnoise.Create()
 
 describe('FastNoiseJS library', function () {
   let x, y, z
+  const noise = new fastnoise.Noise()
 
   beforeEach(function () {
     x = Math.random() * 50
@@ -65,61 +65,61 @@ describe('FastNoiseJS library', function () {
 
   describe('Getting noise by setting manually', function () {
     it('should work for GetValue', function () {
-      noise.SetNoiseType(noise.VALUE)
+      noise.SetNoiseType(fastnoise.Value)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetValueFractal', function () {
-      noise.SetNoiseType(noise.VALUE_FRACTAL)
+      noise.SetNoiseType(fastnoise.ValueFractal)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetPerlin', function () {
-      noise.SetNoiseType(noise.PERLIN)
+      noise.SetNoiseType(fastnoise.Perlin)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetPerlinFractal', function () {
-      noise.SetNoiseType(noise.PERLIN_FRACTAL)
+      noise.SetNoiseType(fastnoise.PerlinFractal)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetSimplex', function () {
-      noise.SetNoiseType(noise.SIMPLEX)
+      noise.SetNoiseType(fastnoise.Simplex)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetSimplexFractal', function () {
-      noise.SetNoiseType(noise.SIMPLEX_FRACTAL)
+      noise.SetNoiseType(fastnoise.SimplexFractal)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetCellular', function () {
-      noise.SetNoiseType(noise.CELLULAR)
+      noise.SetNoiseType(fastnoise.Cellular)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetCubic', function () {
-      noise.SetNoiseType(noise.CUBIC)
+      noise.SetNoiseType(fastnoise.Cubic)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetCubicFractal', function () {
-      noise.SetNoiseType(noise.CUBIC_FRACTAL)
+      noise.SetNoiseType(fastnoise.CubicFractal)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })
 
     it('should work for GetWhiteNoise', function () {
-      noise.SetNoiseType(noise.WHITE_NOISE)
+      noise.SetNoiseType(fastnoise.WhiteNoise)
       expect(noise.GetNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetNoise(x, y)).to.be.within(-1, 1)
     })

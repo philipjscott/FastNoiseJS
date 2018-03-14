@@ -6,7 +6,7 @@
       "cflags_cc!": [ "-fno-exceptions" ],
       "sources": [
         "addon.cc",
-        "FastNoiseJs.cc",
+        "./lib/FastNoiseJs.cc",
         "./vendor/FastNoise.cc"
       ],
       "include_dirs": [

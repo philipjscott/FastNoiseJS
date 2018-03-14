@@ -2,7 +2,7 @@
 #define FASTNOISEJS_H
 
 #include <napi.h>
-#include "./vendor/FastNoise.h"
+#include "../vendor/FastNoise.h"
 
 class FastNoiseJs : public Napi::ObjectWrap<FastNoiseJs> {
   public:

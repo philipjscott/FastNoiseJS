@@ -35,7 +35,7 @@ Napi::Object FastNoiseJs::Init(Napi::Env env, Napi::Object exports) {
   constructor = Napi::Persistent(func);
   constructor.SuppressDestruct();
 
-  exports.Set("Create", func);
+  exports.Set("Noise", func);
   exports.Set("Value", Napi::Number::New(env, FastNoise::Value));
   exports.Set("ValueFractal", Napi::Number::New(env, FastNoise::ValueFractal));
   exports.Set("Perlin", Napi::Number::New(env, FastNoise::Perlin));
@@ -77,7 +77,7 @@ FastNoiseJs::FastNoiseJs(const Napi::CallbackInfo& info) : Napi::ObjectWrap<Fast
 
   int length = info.Length();
 
-  if (length <= 0 || !info[0].IsNumber()) {
+  if (length > 0) {
     if (!info[0].IsNumber()) {
       Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
     } else {
