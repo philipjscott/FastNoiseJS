@@ -1,5 +1,6 @@
 const { expect } = require('chai')
 const drawNoise = require('draw-noise')
+const mkdir = require('mkdirp')
 const fastnoise = require('../')
 const path = require('path')
 
@@ -14,6 +15,8 @@ const draw = (fn, filename) => {
 describe('FastNoiseJS library', function () {
   let x, y, z
   const noise = fastnoise.Create()
+
+  mkdir.sync(path.join(__dirname, './images'))
 
   beforeEach(function () {
     x = Math.random() * 50
