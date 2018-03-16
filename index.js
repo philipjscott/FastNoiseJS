@@ -1,3 +1,11 @@
-const noise = require('./build/Release/noise')
+const fastnoise = require('bindings')('addon')
 
-module.exports = noise
+fastnoise.Create = function (seed) {
+  const noise = (seed)
+    ? new fastnoise.Noise(seed)
+    : new fastnoise.Noise()
+
+  return noise
+}
+
+module.exports = fastnoise

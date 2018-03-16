@@ -2,3 +2,7 @@
 *.swo
 *.swp
 TODO.md
+*.log
+**/build
+/.nyc_output
+/test/images
