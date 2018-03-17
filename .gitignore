@@ -6,3 +6,5 @@ TODO.md
 **/build
 /.nyc_output
 /test/images
+
+.vscode
