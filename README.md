@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/fastnoisejs.svg)](https://badge.fury.io/js/fastnoisejs)
 [![Build Status](https://travis-ci.org/ScottyFillups/FastNoiseJS.svg?branch=master)](https://travis-ci.org/ScottyFillups/FastNoiseJS)
+[![Coverage Status](https://coveralls.io/repos/github/ScottyFillups/FastNoiseJS/badge.svg?branch=master)](https://coveralls.io/github/ScottyFillups/FastNoiseJS?branch=master)
 
 ![Cellular](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetCellular)
 ![Cubic](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetCubic.png)
