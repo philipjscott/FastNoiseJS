@@ -13,13 +13,17 @@ cache:
 notifications:
   email: false
 node_js:
-  - '9'
+  - '10'
   - '8'
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+script:
+  - yarn run test
 after_success:
   - yarn global add travis-deploy-once
   - travis-deploy-once "npm run semantic-release"
+after_script:
+  - yarn run coverage 
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

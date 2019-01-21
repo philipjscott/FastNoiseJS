@@ -2,15 +2,16 @@
 
 [![npm version](https://badge.fury.io/js/fastnoisejs.svg)](https://badge.fury.io/js/fastnoisejs)
 [![Build Status](https://travis-ci.org/ScottyFillups/FastNoiseJS.svg?branch=master)](https://travis-ci.org/ScottyFillups/FastNoiseJS)
+[![Coverage Status](https://coveralls.io/repos/github/ScottyFillups/FastNoiseJS/badge.svg?branch=master)](https://coveralls.io/github/ScottyFillups/FastNoiseJS?branch=master)
 
-![Cellular](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetCellular)
+![Cellular](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetCellular.png)
 ![Cubic](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetCubic.png)
 ![Perlin](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetPerlin.png)
 ![Simplex](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetSimplex.png)
 ![PerlinFractal]( https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetPerlinFractal.png)
 ![SimplexFractal](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetSimplexFractal.png)
 
-FastNoiseJS is a noise library that uses [FastNoise](https://github.com/Auburns/FastNoise) as a C++ addon.
+FastNoiseJS provides N-API bindings for [FastNoise](https://github.com/Auburns/FastNoise), so you can call FastNoise functions in Node.js.
 
 ## Installation
 
