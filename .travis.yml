@@ -13,7 +13,7 @@ cache:
 notifications:
   email: false
 node_js:
-  - '9'
+  - '10'
   - '8'
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
