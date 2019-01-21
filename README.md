@@ -11,7 +11,7 @@
 ![PerlinFractal]( https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetPerlinFractal.png)
 ![SimplexFractal](https://raw.githubusercontent.com/ScottyFillups/FastNoiseJS/master/images/GetSimplexFractal.png)
 
-FastNoiseJS is a noise library that uses [FastNoise](https://github.com/Auburns/FastNoise) as a C++ addon.
+FastNoiseJS provides N-API bindings for [FastNoise](https://github.com/Auburns/FastNoise), so you can call FastNoise functions in Node.js.
 
 ## Installation
 
