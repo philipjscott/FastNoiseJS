@@ -3,7 +3,7 @@
   "version": "0.0.0-development",
   "main": "index.js",
   "author": "Philip Scott <pscott@zeptohost.com>",
-  "description": "Fast noise functions for Node.js!",
+  "description": "FastNoise.cc N-API bindings for Node.js!",
   "keywords": [
     "fastnoise",
     "noise",
@@ -25,7 +25,7 @@
   "gypfile": true,
   "scripts": {
     "build": "node-gyp configure && node-gyp build",
-    "test": "nyc mocha --reporter spec --recursive test/**/*.test.js",
+    "test": "nyc mocha --reporter spec",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
   },
@@ -35,12 +35,10 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "draw-noise": "^1.1.0",
     "mkdirp": "^0.5.1",
     "mocha": "^5.0.0",
     "node-gyp": "^3.6.2",
     "nyc": "^11.4.1",
-    "segfault-handler": "^1.0.0",
     "semantic-release": "^12.4.1",
     "travis-deploy-once": "^4.3.4"
   },

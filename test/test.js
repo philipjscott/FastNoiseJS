@@ -1,16 +1,7 @@
 const { expect } = require('chai')
-const drawNoise = require('draw-noise')
 const mkdir = require('mkdirp')
 const fastnoise = require('../')
 const path = require('path')
-
-const draw = (fn, filename) => {
-  drawNoise((x, y) => fn(x * 10, y * 10), {
-    width: 100,
-    height: 100,
-    filename: path.join(__dirname, `./images/${filename}`)
-  })
-}
 
 describe('FastNoiseJS library', function () {
   let x, y, z
@@ -46,61 +37,51 @@ describe('FastNoiseJS library', function () {
     it('should work for GetValue', function () {
       expect(noise.GetValue(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetValue(x, y)).to.be.within(-1, 1)
-      draw(noise.GetValue.bind(noise), 'GetValue.png')
     })
 
     it('should work for GetValueFractal', function () {
       expect(noise.GetValueFractal(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetValueFractal(x, y)).to.be.within(-1, 1)
-      draw(noise.GetValueFractal.bind(noise), 'GetValueFractal.png')
     })
 
     it('should work for GetPerlin', function () {
       expect(noise.GetPerlin(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetPerlin(x, y)).to.be.within(-1, 1)
-      draw(noise.GetPerlin.bind(noise), 'GetPerlin.png')
     })
 
     it('should work for GetPerlinFractal', function () {
       expect(noise.GetPerlinFractal(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetPerlinFractal(x, y)).to.be.within(-1, 1)
-      draw(noise.GetPerlinFractal.bind(noise), 'GetPerlinFractal.png')
     })
 
     it('should work for GetSimplex', function () {
       expect(noise.GetSimplex(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetSimplex(x, y)).to.be.within(-1, 1)
-      draw(noise.GetSimplex.bind(noise), 'GetSimplex.png')
     })
 
     it('should work for GetSimplexFractal', function () {
       expect(noise.GetSimplexFractal(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetSimplexFractal(x, y)).to.be.within(-1, 1)
-      draw(noise.GetSimplexFractal.bind(noise), 'GetSimplexFractal.png')
     })
 
     it('should work for GetCellular', function () {
       expect(noise.GetCellular(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetCellular(x, y)).to.be.within(-1, 1)
-      draw(noise.GetCellular.bind(noise), 'GetCellular.png')
     })
 
     it('should work for GetCubic', function () {
       expect(noise.GetCubic(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetCubic(x, y)).to.be.within(-1, 1)
-      draw(noise.GetCubic.bind(noise), 'GetCubic.png')
     })
 
     it('should work for GetCubicFractal', function () {
       expect(noise.GetCubicFractal(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetCubicFractal(x, y)).to.be.within(-1, 1)
-      draw(noise.GetCubicFractal.bind(noise), 'GetCubicFractal.png')
     })
 
     it('should work for GetWhiteNoise', function () {
       expect(noise.GetWhiteNoise(x, y, z)).to.be.within(-1, 1)
       expect(noise.GetWhiteNoise(x, y)).to.be.within(-1, 1)
-      draw(noise.GetWhiteNoise.bind(noise), 'GetWhiteNoise.png')
     })
   })
 
