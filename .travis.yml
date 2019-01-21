@@ -18,6 +18,7 @@ node_js:
 before_install:
   - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
 after_success:
+  - yarn run coverage
   - yarn global add travis-deploy-once
   - travis-deploy-once "npm run semantic-release"
 branches:

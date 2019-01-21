@@ -27,7 +27,8 @@
     "build": "node-gyp configure && node-gyp build",
     "test": "nyc mocha --reporter spec",
     "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
